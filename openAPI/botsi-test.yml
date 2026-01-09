@@ -21,7 +21,6 @@ components:
         Format: {{secret_key}}
 
   schemas:
-    # --- Enums ---
     PlatformType:
       type: string
       enum: [android, ios, ipados, tvos, macos, watchos, visionos, stripe]
@@ -37,7 +36,6 @@ components:
       enum: [production, sandbox]
       description: Set to production when the app is live and to sandbox for testing purposes only.
 
-    # --- Reusable Objects ---
     PricingPhase:
       type: object
       required: [priceAmountMicros, currencyCode, billingPeriod, recurrenceMode]
@@ -138,7 +136,6 @@ components:
           type: string
           description: The unique ID of the customer in your system.
 
-    # --- Requests ---
     CreateProfileRequest:
       type: object
       required: [country, device, os, platform, appVersion]
@@ -187,12 +184,11 @@ components:
           $ref: '#/components/schemas/StoreType'
         attributionSource: 
           type: string
-          description: Indicates where the user action originated (e.g., Facebook Ads, Organic).
+          description: Indicates where the user action originated.
 
     PlayStoreValidationRequest:
       type: object
       required: [token, placementId, productId, environment, subscriptionOfferDetails]
-      description: Validation payload for Google Play Store purchases.
       properties:
         token: 
           type: string
@@ -223,7 +219,7 @@ components:
         subscriptionOfferDetails:
           type: object
           required: [basePlanId, pricingPhases]
-          description: Object from ProductDetails class needed to associate which subscription was purchased.
+          description: Object from ProductDetails class used to associate which subscription was purchased.
           properties:
             basePlanId: 
               type: string
@@ -242,7 +238,7 @@ security:
 paths:
   /profiles:
     post:
-      summary: Create Profile API
+      summary: Create a Profile
       description: This endpoint should be called when the user first starts using the app.
       requestBody:
         required: true
@@ -260,14 +256,13 @@ paths:
                 properties:
                   ok: 
                     type: boolean
-                    description: Indicates request success.
                   data: 
                     $ref: '#/components/schemas/ProfileData'
 
   /paywalls:
     post:
-      summary: Get Paywall API
-      description: Fetches the AI-predicted paywall configuration tailored for the user.
+      summary: Get Paywall
+      description: Fetches the AI-predicted paywall configuration.
       requestBody:
         required: true
         content:
@@ -289,8 +284,8 @@ paths:
 
   /events:
     post:
-      summary: Profile events API
-      description: This call should be triggered from the app after the paywall has been shown to the user.
+      summary: Send Profile Event
+      description: Tracks paywall impressions within the platform.
       requestBody:
         required: true
         content:
@@ -299,7 +294,6 @@ paths:
               type: array
               items: 
                 $ref: '#/components/schemas/ProfileEvent'
-              description: The request body must be an array, where each element represents a separate event object.
       responses:
         '200':
           description: Event tracked.
@@ -310,12 +304,11 @@ paths:
                 properties:
                   ok: 
                     type: boolean
-                    description: Indicates request success.
 
   /purchases/play-store/validate:
     post:
-      summary: Play Store On Purchase Validate API
-      description: This call should be triggered from the app after the Google Play purchase event.
+      summary: Validate Google Play Store Purchase
+      description: This call should be triggered from the app after the purchase event.
       requestBody:
         required: true
         content:
