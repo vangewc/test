@@ -7,9 +7,7 @@
     "favicon": "media/favicon.ico",
     "darkLogo": ""
   },
-  "languages": [
-    "en"
-  ],
+  "languages": ["en"],
   "styles": {
     "mainColor": "#0029F5",
     "darkModeMainColor": "#F0F0FF",
@@ -17,15 +15,17 @@
     "navbarDarkModeColor": "#000621",
     "pagination": false
   },
-  "apiFiles": [
-    "botsi-test.yml"
-  ],
+  "apiFiles": ["botsi-test.yml"],
   "homepage": "/introduction",
   "changelog": false,
   "navbar": [
     {
       "label": "Guides",
       "sidebarRef": "guides"
+    },
+    {
+      "label": "API Reference",
+      "sidebarRef": "apiReference"
     }
   ],
   "externalLinks": [],
@@ -35,10 +35,7 @@
       "categories": [
         {
           "categoryName": "Getting Started",
-          "pages": [
-            "getting-started/introduction",
-            "getting-started/local-development"
-          ]
+          "pages": ["getting-started/introduction", "getting-started/local-development"]
         },
         {
           "categoryName": "Basics",
@@ -53,6 +50,20 @@
                 "basics/page-templates/authentication"
               ]
             }
+          ]
+        }
+      ]
+    },
+    {
+      "sidebarRef": "apiReference",
+      "categories": [
+        {
+          "categoryName": "Botsi Test API",
+          "pages": [
+            "reference/botsi-test/create-a-profile.endpoint",
+            "reference/botsi-test/get-paywall.endpoint",
+            "reference/botsi-test/send-profile-event.endpoint",
+            "reference/botsi-test/validate-google-play-store-purchase.endpoint"
           ]
         }
       ]
