@@ -1,0 +1,169 @@
+openapi: 3.0.0
+info:
+  title: Botsi AI Pricing Model API
+  description: |
+    API for dynamic paywall prediction, user profile management, and purchase validation.
+    All requests require a secret key for authentication.
+  version: 1.0.0
+servers:
+  - url: https://app.botsi.com/api/v1/web-api
+    description: Production Server
+
+components:
+  securitySchemes:
+    SecretKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: The secret key found on your App configuration page.
+
+  schemas:
+    PlatformType:
+      type: string
+      enum: [android, ios, ipados, tvos, macos, watchos, visionos, stripe]
+    
+    StoreType:
+      type: string
+      enum: [app_store, play_store, stripe]
+
+    PricingPhase:
+      type: object
+      required: [priceAmountMicros, currencyCode, billingPeriod, recurrenceMode]
+      properties:
+        priceAmountMicros:
+          type: integer
+          description: Price in micro-units. Use 0 for trials.
+        currencyCode: { type: string, example: "USD" }
+        billingPeriod: { type: string, example: "P1M" }
+        recurrenceMode: { type: integer }
+        billingCycleCount: { type: integer }
+
+    ProfileData:
+      type: object
+      properties:
+        profileId: { type: string, format: uuid }
+        customerUserId: { type: string, nullable: true }
+        country: { type: string }
+        device: { type: string }
+        os: { type: string }
+        platform: { type: string }
+        totalRevenueUsd: { type: number }
+        accessLevels: { type: object }
+        subscriptions: { type: object }
+
+security:
+  - SecretKey: []
+
+paths:
+  /profiles:
+    post:
+      summary: Create a Profile
+      description: Initializes a user profile when the app is first launched.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [country, device, os, platform, appVersion]
+              properties:
+                country: { type: string }
+                device: { type: string }
+                os: { type: string }
+                platform: { $ref: '#/components/schemas/PlatformType' }
+                appVersion: { type: string }
+                customerUserId: { type: string }
+                email: { type: string }
+                advertisingId: { type: string }
+      responses:
+        '200':
+          description: Profile created.
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok: { type: boolean }
+                  data: { $ref: '#/components/schemas/ProfileData' }
+
+  /paywalls:
+    post:
+      summary: Get Paywall
+      description: Fetches the AI-predicted paywall configuration.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [languageLocale, placementId]
+              properties:
+                languageLocale: { type: string }
+                placementId: { type: string }
+                profileId: { type: string }
+                customerUserId: { type: string }
+                store: { $ref: '#/components/schemas/StoreType' }
+      responses:
+        '200':
+          description: Paywall retrieved.
+          content:
+            application/json:
+              schema:
+                properties:
+                  ok: { type: boolean }
+                  data:
+                    type: object
+                    properties:
+                      aiPricingModelId: { type: integer }
+                      id: { type: integer }
+                      externalId: { type: string }
+                      isExperiment: { type: boolean }
+
+  /events:
+    post:
+      summary: Send Profile Event
+      description: Tracks paywall impressions. Must be an array of objects.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                required: [eventType, paywallId, placementId, isExperiment, aiPricingModelId]
+                properties:
+                  eventType: { type: string, enum: [paywall_shown] }
+                  paywallId: { type: integer }
+                  placementId: { type: string }
+                  isExperiment: { type: boolean }
+                  aiPricingModelId: { type: integer }
+      responses:
+        '200':
+          description: Event tracked.
+
+  /purchases/play-store/validate:
+    post:
+      summary: Validate Google Play Store Purchase
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token, placementId, productId, environment, subscriptionOfferDetails]
+              properties:
+                token: { type: string }
+                placementId: { type: string }
+                productId: { type: string }
+                environment: { type: string, enum: [production, sandbox] }
+                subscriptionOfferDetails:
+                  type: object
+                  required: [basePlanId, pricingPhases]
+                  properties:
+                    basePlanId: { type: string }
+                    pricingPhases:
+                      type: array
+                      items: { $ref: '#/components/schemas/PricingPhase' }
+      responses:
+        '200':
+          description: Validated.

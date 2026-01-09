@@ -17,7 +17,9 @@
     "navbarDarkModeColor": "#000621",
     "pagination": false
   },
-  "apiFiles": [],
+  "apiFiles": [
+    "botsi-test.yml"
+  ],
   "homepage": "/introduction",
   "changelog": false,
   "navbar": [
