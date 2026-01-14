@@ -61,6 +61,9 @@
           "categoryName": "Botsi Test API",
           "pages": [
             "reference/botsi-test/create-a-profile.endpoint",
+            "reference/botsi-test/add-single-custom-attribute.endpoint",
+            "reference/botsi-test/update-custom-attribute.endpoint",
+            "reference/botsi-test/add-multiple-custom-attributes.endpoint",
             "reference/botsi-test/get-paywall.endpoint",
             "reference/botsi-test/send-profile-event.endpoint",
             "reference/botsi-test/validate-google-play-store-purchase.endpoint"
