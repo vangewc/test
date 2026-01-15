@@ -416,7 +416,7 @@ components:
           example: "Iphone 15"
         os:
           type: string
-          description: The operating system name.
+          description: The operating system running on the device.
           example: "ios"
         osVersion:
           type: string
@@ -436,7 +436,7 @@ components:
           type: string
           description: |
             The unique ID of the customer in your system. If provided for a new profile,
-            Botsi creates a profile with a random profileId linked to this ID.
+            Botsi creates a profile with a random profileId linked to this ID. It isn't required, but it's strongly recommended.
           example: "user_12345"
         advertisingId:
           type: string
@@ -462,6 +462,11 @@ components:
           type: string
           description: The user's IP address.
           example: "123.123.123.123"
+        idfa:
+          type: string
+          description: The Identifier for Advertisers (IDFA) for iOS devices.
+          example: "00000000-0000-0000-0000-000000000000"
+          
       example:
         country: "US"
         device: "Iphone 15"
@@ -621,8 +626,11 @@ paths:
       summary: Create a Profile
       description: |
           Creates a new user profile in Botsi and initializes the identity required for all subsequent AI Pricing operations.
+              
           This endpoint should be called when a user launches the app for the first time. The response includes a unique `profileId`, which must be stored and reused in future requests such as fetching paywalls, tracking events, and validating purchases.
+              
           If a `customerUserId` is provided, Botsi links it to the generated profile, enabling cross-device and cross-session identification.
+      
       requestBody:
         required: true
         content:
@@ -642,19 +650,25 @@ paths:
                   data:
                     $ref: '#/components/schemas/ProfileData'
               example:
-                ok: true
-                data:
-                  profileId: "a373df7c-dbff-42a4-b22f-b6d151971806"
-                  createdDate: "2025-09-18T08:18:58.9737"
-                  state: "never-subscribed"
-                  customerUserId: "test.mail@mail.test"
-                  country: "US"
-                  device: "Iphone 15"
-                  os: "ios 15.0.2"
-                  platform: "ios"
-                  appVersion: "2.3.4"
-                  botsiSdkVersion: "1.0"
-                  totalRevenueUsd: 0
+                "ok": true,
+                "data": 
+                    profileId: "a373df7c-dbff-42a4-b22f-b6d151971806"
+                    createdDate: "2025-09-18T08:18:58.973Z"
+                    linkedProfileIds: null
+                    state: "never-subscribed"
+                    customerUserId: "test.mail@mail.test"
+                    migrationProfileId: null
+                    country: "US"
+                    device: "iPhone 15"
+                    os: "iOS 15.0.2"
+                    platform: "ios"
+                    advertisingId: "123"
+                    appBuild: "1.2.3"
+                    appVersion: "2.3.4"
+                    botsiSdkVersion: "1.0"
+                    custom: []
+                    email: "test.mail@mail.test"
+                    phone: "+12344556789"
 
   /profiles/custom-attributes:
     post:
@@ -691,9 +705,9 @@ paths:
               example:
                 ok: true
                 data:
-                  id: "yFtuWu"
                   key: "user_level"
                   value: "premium"
+                  id: "yFtuWu"
 
     put:
       summary: Update Custom Attribute
