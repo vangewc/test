@@ -331,9 +331,11 @@ components:
             properties:
               botsiProductId:
                 type: integer
+                description: Internal product ID in Botsi.
                 example: 1
               isConsumable:
                 type: boolean
+                description: Indicates whether the product is a consumable.
                 example: false
               sourcePoductId:
                 type: string
@@ -341,14 +343,31 @@ components:
                 example: "free.app.store.p.id"
               appStoreOfferType:
                 type: string
+                description: The App Store offer type associated with the product, if applicable.
                 example: "promotional"
               promotionalOfferId:
                 type: string
+                description: Promotional offer identifier configured for the App Store, if applicable.
                 example: "app_store_offer_free"
               winBackOfferId:
                 type: string
                 nullable: true
+                description: Win-back offer identifier, if applicable.
                 example: null
+              basePlanId:
+                type: string
+                nullable: true
+                description: Base plan identifier for Google Play subscriptions (if applicable).
+                example: "1month-sub"
+              offerIds:
+                type: array
+                nullable: true
+                description: List of Google Play offer IDs associated with the base plan (if applicable).
+                items:
+                  type: string
+                example:
+                  - "intro_offer"
+                  - "holiday_promo"
         placementId:
           type: string
           description: Placement ID that produced this paywall.
