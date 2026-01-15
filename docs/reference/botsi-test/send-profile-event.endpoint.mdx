@@ -4,4 +4,11 @@ file: openAPI/botsi-test.yml
 ---
 
 {/* Do not edit the metadata */}
-Tracks paywall impressions within the platform.
+Records one or more user interaction events related to paywall exposure.
+
+This endpoint is primarily used to track when a paywall is shown to a user (`paywall_shown`). Event data is critical for
+AI Pricing analytics, experiment evaluation, and model optimization.
+
+The request body must be an array of event objects. Each event should reference the identifiers returned by the Get Paywall API
+to ensure accurate attribution. Call this endpoint immediately after a paywall is displayed to the user.
+

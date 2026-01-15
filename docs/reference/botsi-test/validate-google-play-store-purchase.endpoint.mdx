@@ -4,4 +4,11 @@ file: openAPI/botsi-test.yml
 ---
 
 {/* Do not edit the metadata */}
-This call should be triggered from the app after the purchase event.
+Validates an in-app purchase or subscription completed through the Google Play Store.
+
+This endpoint confirms the purchase token with Google and links the transaction to the user profile and paywall context.
+It supports both one-time purchases and subscriptions with multiple pricing phases.
+
+Recommendation:
+If you previously called Get Paywall, include `isExperiment` and `aiPricingModelId` from that response to improve analytics attribution.
+

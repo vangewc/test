@@ -4,4 +4,12 @@ file: openAPI/botsi-test.yml
 ---
 
 {/* Do not edit the metadata */}
-Fetches the AI-predicted paywall configuration.
+Retrieves an AI-predicted paywall configuration for a specific user and placement.
+
+This endpoint triggers the AI Pricing model, which evaluates user context, placement configuration, and historical data to determine
+the most relevant paywall to display. The response includes the selected paywall, associated products, and experiment metadata
+required for analytics and attribution.
+
+This request must be executed before displaying a paywall to the user. The returned identifiers (`paywallId`, `aiPricingModelId`,
+and `isExperiment`) should be reused when sending events and validating purchases.
+

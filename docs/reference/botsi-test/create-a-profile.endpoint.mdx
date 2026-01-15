@@ -4,4 +4,7 @@ file: openAPI/botsi-test.yml
 ---
 
 {/* Do not edit the metadata */}
-This endpoint should be called when the user first starts using the app.
+Creates a new user profile in Botsi and initializes the identity required for all subsequent AI Pricing operations.
+This endpoint should be called when a user launches the app for the first time. The response includes a unique `profileId`, which must be stored and reused in future requests such as fetching paywalls, tracking events, and validating purchases.
+If a `customerUserId` is provided, Botsi links it to the generated profile, enabling cross-device and cross-session identification.
+

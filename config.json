@@ -66,7 +66,8 @@
             "reference/botsi-test/add-multiple-custom-attributes.endpoint",
             "reference/botsi-test/get-paywall.endpoint",
             "reference/botsi-test/send-profile-event.endpoint",
-            "reference/botsi-test/validate-google-play-store-purchase.endpoint"
+            "reference/botsi-test/validate-google-play-store-purchase.endpoint",
+            "reference/botsi-test/validate-apple-store-purchase.endpoint"
           ]
         }
       ]
