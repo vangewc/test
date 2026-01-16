@@ -13,3 +13,5 @@ required for analytics and attribution.
 This request must be executed before displaying a paywall to the user. The returned identifiers (`paywallId`, `aiPricingModelId`,
 and `isExperiment`) should be reused when sending events and validating purchases.
 
+Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
+

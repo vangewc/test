@@ -43,7 +43,7 @@ components:
           example: "2200000261699248"
         profileId:
           type: string
-          description: Botsi `profileId`. Provide either profileId or `customerUserId`.
+          description: Botsi `profileId`. Provide either `profileId` or `customerUserId`.
           example: "FFF3C120-0CA8-480F-9B19-3955A5428E39"
         customerUserId:
           type: string
@@ -113,7 +113,7 @@ components:
 
     PricingPhase:
       type: object
-      required: [priceAmountMicros, currencyCode, billingPeriod, recurrenceMode]
+      required: [priceAmountMicros, currencyCode, billingPeriod, recurrenceMode, billingCycleCount]
       properties:
         priceAmountMicros:
           type: integer
@@ -218,7 +218,7 @@ components:
       properties:
         profileId:
           type: string
-          description: The unique Botsi profile ID. Provide either profileId or customerUserId.
+          description: The unique Botsi profile ID. Provide either `profileId` or `customerUserId`.
           example: "0072102a-c00c-4ea5-9271-1b6e975f2d63"
         customerUserId:
           type: string
@@ -525,7 +525,7 @@ components:
 
     PlayStoreValidationRequest:
       type: object
-      required: [token, placementId, productId, environment, subscriptionOfferDetails]
+      required: [token, placementId, productId, environment, subscriptionOfferDetails, isExperiment, aiPricingModelId, ]
       properties:
         token:
           type: string
@@ -707,6 +707,9 @@ paths:
         Updates an existing custom attribute for a profile.
 
         Use this endpoint to modify previously stored metadata (for example, upgrading a user tier from `premium` to `vip`).
+        
+        Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
+
       requestBody:
         required: true
         content:
@@ -855,6 +858,8 @@ paths:
 
         Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
         
+        All events in the request must have the same profileId or customerUserId (not both). Events with different profile identifiers cannot be processed in a single request.
+
       requestBody:
         required: true
         content:
@@ -938,6 +943,18 @@ paths:
                   phone: "string"
                   gender: "string"
                   idfa: "string"
+                  username": "string"
+                  locale": "string"
+                  ip": "string"
+                  createdAt": "string"
+                  ipCountry": "string"
+                  appleConsumptionConsent": null
+                  birthday": "string"
+                  age": "string"
+                  totalRevenueUsd": 0
+                  accessLevels": {}
+                  subscriptions": {}
+                  nonSubscriptions": {}
 
   /purchases/play-store/validate:
     post:
