@@ -43,7 +43,7 @@ components:
           example: "2200000261699248"
         profileId:
           type: string
-          description: Botsi profileId. Provide either profileId or customerUserId.
+          description: Botsi `profileId`. Provide either profileId or `customerUserId`.
           example: "FFF3C120-0CA8-480F-9B19-3955A5428E39"
         customerUserId:
           type: string
@@ -79,13 +79,7 @@ components:
           example: 123
         environment:
           $ref: '#/components/schemas/EnvironmentType'
-      oneOf:
-        - title: Identify user by profileId
-          description: Use the Botsi profileId returned by Create Profile.
-          required: [profileId]
-        - title: Identify user by customerUserId
-          description: Use your internal customer identifier.
-          required: [customerUserId]
+
       example:
         placementId: "somePlacementId"
         paywallId: 1
@@ -228,17 +222,11 @@ components:
           example: "0072102a-c00c-4ea5-9271-1b6e975f2d63"
         customerUserId:
           type: string
-          description: The customer user ID from your system. Provide either customerUserId or profileId.
+          description: The customer user ID from your system. Provide either `customerUserId` or `profileId`.
           example: "user-123"
         custom:
           $ref: '#/components/schemas/AttributeObject'
-      oneOf:
-        - title: Identify user by profileId
-          description: Use the Botsi profileId returned by Create Profile.
-          required: [profileId]
-        - title: Identify user by customerUserId
-          description: Use your internal customer identifier.
-          required: [customerUserId]
+
       example:
         profileId: "0072102a-c00c-4ea5-9271-1b6e975f2d63"
         customerUserId: "user-123"
@@ -269,22 +257,16 @@ components:
       properties:
         profileId:
           type: string
-          description: Botsi profileId. Provide either profileId or customerUserId.
+          description: Botsi profileId. Provide either `profileId` or `customerUserId`.
         customerUserId:
           type: string
-          description: Your internal customer ID. Use either customerUserId or profileId.
+          description: Your internal customer ID. Use either `customerUserId` or `profileId`.
         custom:
           type: array
           minItems: 1
           items:
             $ref: '#/components/schemas/AttributeObject'
-      oneOf:
-        - title: Identify user by profileId
-          description: Use the Botsi profileId returned by Create Profile.
-          required: [profileId]
-        - title: Identify user by customerUserId
-          description: Use your internal customer identifier.
-          required: [customerUserId]
+
       example:
         customerUserId: "user-123"
         custom:
@@ -357,12 +339,12 @@ components:
               basePlanId:
                 type: string
                 nullable: true
-                description: Base plan identifier for Google Play subscriptions (if applicable).
+                description: Base plan identifier for Google Play subscriptions, if applicable.
                 example: "1month-sub"
               offerIds:
                 type: array
                 nullable: true
-                description: List of Google Play offer IDs associated with the base plan (if applicable).
+                description: List of Google Play offer IDs associated with the base plan, if applicable.
                 items:
                   type: string
                 example:
@@ -404,22 +386,22 @@ components:
           example: 32
         profileId:
           type: string
-          description: The profileId returned from the profile creation call (Botsi profile ID). Provide either profileId or customerUserId.
+          description: The profileId returned from the profile creation call (Botsi profile ID). Provide either `profileId` or `customerUserId`.
           example: "123-abc"
         customerUserId:
           type: string
           description: The unique ID of the customer in your system. It isn't required, but it's strongly recommended.
         attributionSource:
           type: string
-          description: Attribution source (if relevant).
+          description: >
+            Indicates where the user action originated. 
+            Must be one of the predefined sources.
+          enum:
+            - Facebook Ads
+            - Google Search
+            - Referral
+            - Organic
           example: Facebook Ads
-      oneOf:
-        - title: Identify user by profileId
-          description: Use the Botsi profileId returned by Create Profile.
-          required: [profileId]
-        - title: Identify user by customerUserId
-          description: Use your internal customer identifier.
-          required: [customerUserId]
 
     CreateProfileRequest:
       type: object
@@ -500,7 +482,7 @@ components:
 
     GetPaywallRequest:
       type: object
-      required: [deviceTypeModel, osVersion, languageLocale, placementId, store]
+      required: [languageLocale, placementId]
       properties:
         deviceTypeModel:
           type: string
@@ -531,13 +513,7 @@ components:
           description: The unique ID of the customer in your system. It isn't required, but it's strongly recommended.
         store:
           $ref: '#/components/schemas/StoreType'
-      oneOf:
-        - title: Identify user by profileId
-          description: Use the Botsi profileId returned by Create Profile.
-          required: [profileId]
-        - title: Identify user by customerUserId
-          description: Use your internal customer identifier.
-          required: [customerUserId]
+
       example:
         deviceTypeModel: "iPhone 13"
         osVersion: "iOS 16.0"
@@ -611,13 +587,7 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PricingPhase'
-      oneOf:
-        - title: Identify user by profileId
-          description: Use the Botsi profileId returned by Create Profile.
-          required: [profileId]
-        - title: Identify user by customerUserId
-          description: Use your internal customer identifier.
-          required: [customerUserId]
+
       example:
         abTestId: 0
         isSubscription: true
@@ -697,6 +667,9 @@ paths:
 
         Use custom attributes to enrich a user profile with application-specific metadata (for example: user tier, referral source,
         or segmentation labels). This is optional for the core AI Pricing flow.
+        
+        Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
+
       requestBody:
         required: true
         content:
@@ -772,6 +745,8 @@ paths:
         Creates multiple custom attributes for a single profile in one request.
 
         Use this endpoint to set several attributes in bulk for improved performance (for example: tier, subscription_type, referral_source).
+        
+        Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
       requestBody:
         required: true
         content:
@@ -826,6 +801,9 @@ paths:
 
         This request must be executed before displaying a paywall to the user. The returned identifiers (`paywallId`, `aiPricingModelId`,
         and `isExperiment`) should be reused when sending events and validating purchases.
+        
+        Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
+
       requestBody:
         required: true
         content:
@@ -874,6 +852,9 @@ paths:
 
         The request body must be an array of event objects. Each event should reference the identifiers returned by the Get Paywall API
         to ensure accurate attribution. Call this endpoint immediately after a paywall is displayed to the user.
+
+        Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
+        
       requestBody:
         required: true
         content:
@@ -914,6 +895,9 @@ paths:
         and associates it with the corresponding user profile, paywall, and AI Pricing model for accurate conversion tracking and attribution.
 
         A successful response returns the updated user profile, including subscription and entitlement changes.
+        
+        Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
+
       requestBody:
         required: true
         content:
@@ -966,6 +950,9 @@ paths:
 
         Recommendation:
         If you previously called Get Paywall, include `isExperiment` and `aiPricingModelId` from that response to improve analytics attribution.
+        
+        Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
+
       requestBody:
         required: true
         content:
