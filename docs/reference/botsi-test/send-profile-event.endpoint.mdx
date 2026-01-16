@@ -14,3 +14,5 @@ to ensure accurate attribution. Call this endpoint immediately after a paywall i
 
 Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
 
+All events in the request must have the same profileId or customerUserId (not both). Events with different profile identifiers cannot be processed in a single request.
+
