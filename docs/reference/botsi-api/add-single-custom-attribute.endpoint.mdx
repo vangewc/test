@@ -1,0 +1,13 @@
+---
+route: POST /profiles/custom-attributes
+file: openAPI/botsi-api.yml
+---
+
+{/* Do not edit the metadata */}
+Creates a single custom attribute for a profile.
+
+Use custom attributes to enrich a user profile with application-specific metadata (for example: user tier, referral source,
+or segmentation labels). This is optional for the core AI Pricing flow.
+
+Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
+

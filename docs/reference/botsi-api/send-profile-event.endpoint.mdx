@@ -1,0 +1,18 @@
+---
+route: POST /events
+file: openAPI/botsi-api.yml
+---
+
+{/* Do not edit the metadata */}
+Records one or more user interaction events related to paywall exposure.
+
+This endpoint is primarily used to track when a paywall is shown to a user (`paywall_shown`). Event data is critical for
+AI Pricing analytics, experiment evaluation, and model optimization.
+
+The request body must be an array of event objects. Each event should reference the identifiers returned by the Get Paywall API
+to ensure accurate attribution. Call this endpoint immediately after a paywall is displayed to the user.
+
+Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
+
+All events in the request must have the same profileId or customerUserId (not both). Events with different profile identifiers cannot be processed in a single request.
+
