@@ -18,6 +18,7 @@ components:
       name: Authorization
       description: |
         The secret key found on your App configuration page on the Botsi site.
+        **Note:** Do NOT include the 'Bearer' prefix.
         Format: {{secret_key}}
 
   schemas:
