@@ -11,14 +11,14 @@ servers:
     description: Production Server
 
 components:
-  securitySchemes:
-    SecretKey:
-      type: apiKey
-      in: header
-      name: Authorization
-      description: |
-        The secret key found on your App configuration page on the Botsi site.
-        Format: {{secret_key}}
+#  securitySchemes:
+#    SecretKey:
+#      type: apiKey
+#      in: header
+#      name: Authorization
+#      description: |
+#        The secret key found on your App configuration page on the Botsi site.
+#        Format: {{secret_key}}
   parameters:
     SecretKeyHeader:
       name: Authorization
@@ -27,7 +27,7 @@ components:
       required: true
       schema:
         type: string
-      example: "{{secret_key}}"
+        default: "{{secret_key}}"
   schemas:
     AppleStoreValidationRequest:
       type: object
@@ -614,8 +614,8 @@ components:
               recurrenceMode: 1
         token: "algojlnkodhhjceoicbpjngh.A0-J1owvC6A8J2u0kEpN5aNvpsFR8DXeFM0C6qK5_x"
 
-security:
-  - SecretKey: []
+# security:
+#  - SecretKey: []
 
 paths:
   /profiles:
@@ -627,7 +627,8 @@ paths:
           This endpoint should be called when a user launches the app for the first time. The response includes a unique `profileId`, which must be stored and reused in future requests such as fetching paywalls, tracking events, and validating purchases.
               
           If a `customerUserId` is provided, Botsi links it to the generated profile, enabling cross-device and cross-session identification.
-      
+      parameters:
+        - $ref: '#/components/parameters/SecretKeyHeader'
       requestBody:
         required: true
         content:
@@ -677,7 +678,8 @@ paths:
         or segmentation labels). This is optional for the core AI Pricing flow.
         
         Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
-
+      parameters:
+        - $ref: '#/components/parameters/SecretKeyHeader'
       requestBody:
         required: true
         content:
@@ -717,7 +719,8 @@ paths:
         Use this endpoint to modify previously stored metadata (for example, upgrading a user tier from `premium` to `vip`).
         
         Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
-
+      parameters:
+        - $ref: '#/components/parameters/SecretKeyHeader'
       requestBody:
         required: true
         content:
@@ -758,6 +761,8 @@ paths:
         Use this endpoint to set several attributes in bulk for improved performance (for example: tier, subscription_type, referral_source).
         
         Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
+      parameters:
+        - $ref: '#/components/parameters/SecretKeyHeader'
       requestBody:
         required: true
         content:
@@ -912,7 +917,8 @@ paths:
         A successful response returns the updated user profile, including subscription and entitlement changes.
         
         Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
-
+      parameters:
+        - $ref: '#/components/parameters/SecretKeyHeader'
       requestBody:
         required: true
         content:
@@ -979,7 +985,8 @@ paths:
         If you previously called Get Paywall, include `isExperiment` and `aiPricingModelId` from that response to improve analytics attribution.
         
         Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
-
+      parameters:
+        - $ref: '#/components/parameters/SecretKeyHeader'
       requestBody:
         required: true
         content:
