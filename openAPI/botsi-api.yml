@@ -18,9 +18,16 @@ components:
       name: Authorization
       description: |
         The secret key found on your App configuration page on the Botsi site.
-        **Note:** Do NOT include the 'Bearer' prefix.
         Format: {{secret_key}}
-
+  parameters:
+    SecretKeyHeader:
+      name: Authorization
+      in: header
+      description: The secret key found on your App configuration page on the Botsi site.
+      required: true
+      schema:
+        type: string
+      example: "{{secret_key}}"
   schemas:
     AppleStoreValidationRequest:
       type: object
@@ -860,6 +867,8 @@ paths:
         Identify the user by providing either `customerUserId` or `profileId`. At least one is required to return the correct result.
         
         All events in the request must have the same profileId or customerUserId (not both). Events with different profile identifiers cannot be processed in a single request.
+      parameters:
+        - $ref: '#/components/parameters/SecretKeyHeader'
 
       requestBody:
         required: true
