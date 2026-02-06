@@ -66,8 +66,6 @@
             "reference/botsi-api/add-single-custom-attribute.endpoint",
             "reference/botsi-api/update-custom-attribute.endpoint",
             "reference/botsi-api/add-multiple-custom-attributes.endpoint",
-            
-            
             "reference/botsi-api/validate-google-play-store-purchase.endpoint",
             "reference/botsi-api/validate-apple-store-purchase.endpoint"
           ]
